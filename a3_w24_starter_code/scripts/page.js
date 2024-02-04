@@ -28,6 +28,8 @@ spawn_rate = 800;
 let maxRocketshipPosX;
 let maxRocketshipPosY;
 const ROCKETSHIP_MOVEMENT = 50;
+let currentShield = 1;
+let prevShield;
 
 /* --------------------------------- MAIN ---------------------------------- */
 $(document).ready(function () {
@@ -79,6 +81,7 @@ $(document).ready(function () {
   level_value = $("#level-value");
   rocketship = $(".rocketship");
   rocketship_image = $("#rocketship-image");
+  shield_section = $('.shieldSection');
 
   // Example: Spawn an asteroid that travels from one border to another
   // spawn(); // Uncomment me to test out the effect!
@@ -161,6 +164,7 @@ function getReady() {
   });
   setTimeout(function () {
     setInterval(spawn, spawn_rate);
+    setInterval(spawnShield, 10000);
   }, 3000);
 }
 
@@ -194,6 +198,26 @@ function moveRocketShip() {
     "left": newXPos,
     "top": newYPos
   });
+}
+
+function spawnShield() {
+  let x = getRandomNumber(0, maxRocketshipPosX);
+  let y = getRandomNumber(0, maxRocketshipPosY);
+  console.log(x, y);
+
+  let objectString = "<div id = 's-" + currentShield + "' class = 'curShield' > <img src = 'src/shield.gif'/></div>";
+  shield_section.append(objectString);
+  // Save the shield element in a variable
+  let currentShieldElement = $('#s-' + currentShield);
+  setTimeout(function () {
+    currentShieldElement.remove();
+  }, 5000);
+  this.id = $('#s-' + currentShield);
+  currentShield++; // ensure each Shield has its own id
+
+  // show this Shield's initial position on screen
+  this.id.css("top", y);
+  this.id.css("left", x);
 }
 
 
